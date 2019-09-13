@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ book.book_title }} reviews
+{% endblock %}
+
+{% block navs %}
+{% if session["username"] %}
+<a class="navbar-item" href="{{url_for('search')}}">Search</a>
+
+<a class="navbar-item" href="{{url_for('myreviews')}}">My reviews</a>
+
+<a class="navbar-item" href="{{url_for('logout')}}">Logout</a>
+{% else %}
+
+<a class="navbar-item" href="{{url_for('login')}}">Login</a>
+
+<a class="navbar-item" href="{{url_for('register')}}">Sign up</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <div class="content">
+            <ul>
+                <h1 class="title">Book details</h1>
+                <li><strong>Title:</strong> {{ book.book_title }}</li>
+                <li><strong>Author:</strong> {{ book.book_author }}</li>
+                <li><strong>Year:</strong> {{ book.book_year }}</li>
+                <li><strong>ISBN:</strong> {{ book.book_isbn }}</li>
+            </ul>
+        </div>
+        <div class="content">
+            <ul>
+                <li><strong>Member reviews</strong></li>
+                <li><strong>Reviews:</strong> {{ rev_count }}</li>
+                <li><strong>Average rating:</strong> {{ rev_avg }}</li>
+                {% for review in reviews %}
+                <li>
+                    <p><strong>Reviewed by:</strong> <a
+                            href="{{url_for('reviewedby', username=review.user_username)}}">{{ review.user_username }}</a>
+                    </p>
+                    <p><strong>Review:</strong> {{ review.review_text }}</p>
+                    <p><strong>Rating:</strong> {{ review.review_rating }}/5</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

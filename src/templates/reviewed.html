@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Review submitted
+{% endblock %}
+
+{% block navs %}
+{% if session["username"] %}
+<a class="navbar-item" href="{{url_for('search')}}">Search</a>
+
+<a class="navbar-item" href="{{url_for('myreviews')}}">My reviews</a>
+
+<a class="navbar-item" href="{{url_for('logout')}}">Logout</a>
+{% else %}
+
+<a class="navbar-item" href="{{url_for('login')}}">Login</a>
+
+<a class="navbar-item" href="{{url_for('register')}}">Sign up</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <h1 class="title">Review submitted!</h1>
+        <a class="button is-warning" href="/search">Search for another book</a>
+    </div>
+</div>
+{% endblock %}

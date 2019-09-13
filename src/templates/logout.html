@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Goodbye!
+{% endblock %}
+
+{% block navs %}
+{% if session["username"] %}
+<a class="navbar-item" href="{{url_for('search')}}">Search</a>
+
+<a class="navbar-item" href="{{url_for('myreviews')}}">My reviews</a>
+
+<a class="navbar-item" href="{{url_for('logout')}}">Logout</a>
+{% else %}
+
+<a class="navbar-item" href="{{url_for('login')}}">Login</a>
+
+<a class="navbar-item" href="{{url_for('register')}}">Sign up</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <h1 class="title">We're sad to see you go! 😭</h1>
+        <h2 class="subtitle">You are now logged out.</h2>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Reviews by {{ username }}
+{% endblock %}
+
+{% block navs %}
+{% if session["username"] %}
+
+<a class="navbar-item" href="{{url_for('search')}}">Search</a>
+
+<a class="navbar-item" href="{{url_for('myreviews')}}">My reviews</a>
+
+<a class="navbar-item" href="{{url_for('logout')}}">Logout</a>
+{% else %}
+
+<a class="navbar-item" href="{{url_for('login')}}">Login</a>
+
+<a class="navbar-item" href="{{url_for('register')}}">Sign up</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <ul>
+            <li><strong>Reviews by</strong> {{ username }}</li>
+            {% if reviews %}
+            {% for review in reviews %}
+            <li>
+                <p>Title: <a href="{{url_for('book', isbn=review.book_isbn)}}">{{ review.book_title }}</a></p>
+                <p>Author: {{ review.book_author }}</p>
+                <p>Review: {{ review.review_text }}</p>
+                <p>Rating: {{ review.review_rating }}/5</p>
+            </li>
+            {% endfor %}
+            {% else %}
+            <h1 class="title">Oops! This user has not left any reviews.</li>
+                {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
