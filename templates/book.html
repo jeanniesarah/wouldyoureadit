@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ book.book_title }}, {{ book.book_author }}
+{% endblock %}
+
+{% block navs %}
+{% if session["username"] %}
+<a class="navbar-item" href="{{url_for('search')}}">Search</a>
+
+<a class="navbar-item" href="{{url_for('myreviews')}}">My reviews</a>
+
+<a class="navbar-item" href="{{url_for('logout')}}">Logout</a>
+{% else %}
+
+<a class="navbar-item" href="{{url_for('login')}}">Login</a>
+
+<a class="navbar-item" href="{{url_for('register')}}">Sign up</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <div>
+            <div>
+                <div>
+                    <h1 class="title">Book details</h1>
+                    <ul>
+                        <li><strong>Title:</strong> {{ book.book_title }}</li>
+                        <li><strong>Author:</strong> {{ book.book_author }}</li>
+                        <li><strong>Year:</strong> {{ book.book_year }}</li>
+                        <li><strong>ISBN:</strong> {{ book.book_isbn }}</li>
+                    </ul>
+                </div>
+                <div>
+                    <br>
+                    <ul>
+                        <li><strong>Goodreads rating</strong></li>
+                        <li><strong>Ratings count:</strong> {{ ratings_count }}</li>
+                        <li><strong>Average rating:</strong> {{ average_rating }}</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <div>
+                <ul>
+                    <li><strong>Member reviews</strong></li>
+                    {% if reviews %}
+                    <li><strong>Reviews:</strong> {{ rev_count }}</li>
+                    <li><strong>Average rating:</strong> {{ rev_avg }}</li>
+                    {% for review in reviews %}
+                    <li>
+                        <p><strong>Reviewed by:</strong> <a
+                                href="{{url_for('reviewedby', username=review.user_username)}}">{{ review.user_username }}</a>
+                        </p>
+                        <p><strong>Review:</strong> {{ review.review_text }}</p>
+                        <p><strong>Rating:</strong> {{ review.review_rating }}/5</p>
+                    </li>
+                    {% endfor %}
+                    {% if rev_count > 2 %}
+                    <li><a href="{{url_for('reviews', isbn=book.book_isbn)}}" class="button is-warning">See all
+                            reviews</a></li>
+                    {% endif %}
+                    {% else %}
+                    <li>No reviews for this book. Be the first!</li>
+                    {% endif %}
+                </ul>
+            </div>
+            <br>
+            <br>
+            <br>
+            {% if reviewed == false %}
+            <div>
+                <form id="review-form" action="{{url_for('book', isbn=book.book_isbn)}}" method="post">
+                    <h2 class="title">Review this book</h2>
+
+                    <div class="field">
+                        <textarea class="textarea" name="review" type="text"
+                            placeholder="What do you think of this book?"></textarea>
+                    </div>
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <div class="select">
+                                <select name="rating"
+                                    oninvalid="alert('Please select a rating before submitting your review');" required>
+                                    <option value="" selected disabled hidden>Rating</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-star"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-warning" type="submit" value="Submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}

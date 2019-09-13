@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Search 
+{% endblock %}
+
+{% block navs %}
+{% if session["username"] %}
+<a class="navbar-item" href="{{url_for('search')}}">Search</a>
+
+<a class="navbar-item" href="{{url_for('myreviews')}}">My reviews</a>
+
+<a class="navbar-item" href="{{url_for('logout')}}">Logout</a>
+{% else %}
+
+<a class="navbar-item" href="{{url_for('login')}}">Login</a>
+
+<a class="navbar-item" href="{{url_for('register')}}">Sign up</a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="hero-body">
+    <div class="container has-text-centered">
+        <form id="form-style" action="{{ url_for('search') }}" method="post">
+            <h1 class="title">Hi {{ session["username"] }} 😄</h1>
+            <h2 class="subtitle">Search the book database</h2>
+            <img src="/static/orange-arrow.svg" alt="arrow" width="50px" height="100px">
+            <div class="field">
+                <input class="input" type="text" name="search_value" placeholder="Search for an ISBN, title or author"
+                    required>
+            </div>
+            <button type="submit" class="button is-warning is-fullwidth">Search</button>
+            {% if error %}
+            <p class=error><strong>{{ error }}</strong>
+                {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}
